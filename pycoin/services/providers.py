@@ -56,6 +56,16 @@ def spendables_for_address(bitcoin_address, netcode, format=None):
     return []
 
 
+def get_balance_for_address(bitcoin_address, netcode):
+    for m in service_provider_methods("get_balance", get_default_providers_for_netcode(netcode)):
+        try:
+            balance = m(bitcoin_address)
+            return balance
+        except Exception:
+            pass
+    return None
+
+
 def get_tx_db(netcode=None):
     lookup_methods = service_provider_methods("tx_for_tx_hash", get_default_providers_for_netcode(netcode))
     read_cache_dirs = tx_read_cache_dirs()

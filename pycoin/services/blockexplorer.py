@@ -22,3 +22,8 @@ class BlockExplorerProvider(object):
         tx = Tx.from_hex(j.get("rawtx", ""))
         if tx.hash() == tx_hash:
             return tx
+
+    def get_balance(self, address):
+        url = self.url + "/addr/%s/balance" % address
+        result = json.loads(urlopen(url).read().decode("utf8"))
+        return result
