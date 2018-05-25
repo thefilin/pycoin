@@ -27,3 +27,12 @@ class BlockExplorerProvider(object):
         url = self.url + "/addr/%s/balance" % address
         result = json.loads(urlopen(url).read().decode("utf8"))
         return result
+
+    def broadcast_tx(self, tx):
+        """
+        broadcast a transaction to the network
+        """
+        url = self.url + "/tx/send"
+        data = {"rawtx": tx.as_hex()}
+        result = json.loads(urlopen(url, data=data).read().decode("utf8"))
+        return result

@@ -33,6 +33,11 @@ class BlockcypherProvider(object):
         url_append = "?unspentOnly=true&token=%s&includeScript=true" % self.api_key
         url = self.base_url("addrs/%s%s" % (address, url_append))
         result = json.loads(urlopen(url).read().decode("utf8"))
+
+        error = result.get("error", None)
+        if error is not None:
+            raise Exception(error)
+
         for txn in result.get("txrefs", []):
             coin_value = txn.get("value")
             script = h2b(txn.get("script"))

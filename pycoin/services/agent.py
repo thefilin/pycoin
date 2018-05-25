@@ -1,5 +1,7 @@
 from pycoin.version import version
 
+import requests
+
 try:
     import urllib2 as request
     from urllib import urlencode  # noqa
@@ -12,6 +14,12 @@ PYCOIN_AGENT = 'pycoin/%s' % version
 
 
 def urlopen(url, data=None):
-    req = request.Request(url, data=data)
-    req.add_header('User-agent', PYCOIN_AGENT)
-    return request.urlopen(req)
+    class Wrapper:
+        def __init__(self, content):
+            self.content = content.encode()
+
+        def read(self):
+            return self.content
+
+    req = requests.get(url) if data is None else requests.post(url, data=data)
+    return Wrapper(req.text)
