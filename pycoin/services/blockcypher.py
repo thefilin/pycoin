@@ -66,6 +66,11 @@ class BlockcypherProvider(object):
         url_append = "/balance?token=%s" % self.api_key
         url = self.base_url("addrs/%s" % (address + url_append))
         result = json.loads(urlopen(url).read().decode("utf8"))
+
+        error = result.get("error", None)
+        if error is not None:
+            raise Exception(error)
+
         return result
 
     def broadcast_tx(self, tx):
