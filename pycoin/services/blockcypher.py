@@ -77,7 +77,12 @@ class BlockcypherProvider(object):
         """
         broadcast a transaction to the network
         """
+        if type(tx) is str:
+            tx_hex = tx
+        else:
+            tx_hex = tx.as_hex()
+
         url = self.base_url("txs/push")
-        data = {"tx": tx.as_hex()}
+        data = {"tx": tx_hex}
         result = json.loads(urlopen(url, data=json.dumps(data)).read().decode("utf8"))
         return result

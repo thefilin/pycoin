@@ -52,8 +52,13 @@ class BlockchainInfoProvider(object):
 
     def broadcast_tx(self, tx):
         s = io.BytesIO()
-        tx.stream(s)
-        tx_as_hex = b2h(s.getvalue())
+
+        if type(tx) is str:
+            tx_as_hex = tx
+        else:
+            tx.stream(s)
+            tx_as_hex = b2h(s.getvalue())
+
         data = urlencode(dict(tx=tx_as_hex)).encode("utf8")
         URL = "https://blockchain.info/pushtx"
         try:
