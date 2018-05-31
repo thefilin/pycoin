@@ -1,10 +1,8 @@
-import io
 import json
-import warnings
 
-from .agent import request, urlencode, urlopen
+from .agent import urlopen
 
-from pycoin.serialize import b2h, h2b, b2h_rev
+from pycoin.serialize import h2b, b2h_rev
 from pycoin.tx.Tx import Spendable, Tx
 
 
@@ -49,31 +47,3 @@ class BlockchainInfoProvider(object):
             previous_index = u["tx_output_n"]
             spendables.append(Spendable(coin_value, script, previous_hash, previous_index))
         return spendables
-
-    def broadcast_tx(self, tx):
-        s = io.BytesIO()
-
-        if type(tx) is str:
-            tx_as_hex = tx
-        else:
-            tx.stream(s)
-            tx_as_hex = b2h(s.getvalue())
-
-        data = urlencode(dict(tx=tx_as_hex)).encode("utf8")
-        URL = "https://blockchain.info/pushtx"
-        try:
-            d = urlopen(URL, data=data).read()
-            return d
-        except request.HTTPError as ex:
-            try:
-                d = ex.read()
-                ex.message = d
-            except:
-                pass
-            raise ex
-
-
-def send_tx(self, tx):
-    warnings.warn("use BlockchainInfoProvider.broadcast_tx instead of send_tx",
-                  category=DeprecationWarning)
-    return BlockchainInfoProvider().broadcast_tx(tx)

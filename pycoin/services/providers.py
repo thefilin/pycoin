@@ -128,7 +128,7 @@ DESCRIPTOR_CRE_INIT_TUPLES = [
         r"^bitcoinrpc://(?P<user>\S*):(?P<password>\S*)\@(?P<hostname>\S*)(:(?P<port>\d*))"),
         bitcoin_rpc_init),
     (re.compile(r"^blockchain\.info$"), lambda m, netcode: BlockchainInfoProvider(netcode)),
-    (re.compile(r"^blockcypher\.com$"), lambda m, netcode: BlockcypherProvider(netcode)),
+    (re.compile(r"^blockcypher\.com$"), lambda m, netcode: BlockcypherProvider(netcode=netcode)),
     (re.compile(r"^blockexplorer\.com$"), lambda m, netcode: BlockExplorerProvider(netcode)),
     (re.compile(r"^chain\.so$"), lambda m, netcode: ChainSoProvider(netcode)),
     (re.compile(r"^insight:(?P<url>\S*)$"), insight_init),

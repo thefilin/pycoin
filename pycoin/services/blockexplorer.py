@@ -40,4 +40,4 @@ class BlockExplorerProvider(object):
         url = self.url + "/tx/send"
         data = {"rawtx": tx_hex}
         result = json.loads(urlopen(url, data=data).read().decode("utf8"))
-        return result
+        return result['txid']
