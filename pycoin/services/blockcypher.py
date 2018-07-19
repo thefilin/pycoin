@@ -71,7 +71,7 @@ class BlockcypherProvider(object):
         if error is not None:
             raise Exception(error)
 
-        return result
+        return result.get("balance", None)
 
     def broadcast_tx(self, tx):
         """
