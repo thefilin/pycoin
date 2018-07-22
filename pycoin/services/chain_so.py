@@ -46,3 +46,7 @@ class ChainSoProvider(object):
         r = json.loads(urlopen(url).read().decode("utf8"))
         tx = Tx.parse(io.BytesIO(h2b(r.get("data").get("tx_hex"))))
         return tx
+
+    def get_balance(self, address):
+        res = json.loads(urlopen(self.base_url('get_address_balance', address)).read().decode("utf8"))
+        return res['data']['confirmed_balance']
